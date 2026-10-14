@@ -1,0 +1,163 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1000" width="1400" height="1000" font-family="Segoe UI, Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" role="img" aria-label="Transformer architecture: encoder on the left, decoder in the middle, with scaled dot-product attention and multi-head attention expanded on the right">
+<title>Transformer 结构图（重绘自 Attention Is All You Need, Figure 1）</title>
+<style>
+  svg { --bg:#ffffff; --fg:#1f2328; --muted:#59636e; --line:#8c959f; --panel:#f6f8fa;
+        --panel-line:#d1d9e0;
+        --emb-fill:#fde7f1; --emb-line:#bf3989;
+        --attn-fill:#ffead5; --attn-line:#bc4c00;
+        --norm-fill:#fdf5c8; --norm-line:#9a7c00;
+        --ffn-fill:#ddf4ff; --ffn-line:#0969da;
+        --io-fill:#eef1f4; --io-line:#5c6771; }
+  @media (prefers-color-scheme: dark) {
+    svg { --bg:#0d1117; --fg:#e6edf3; --muted:#9aa4ae; --line:#6e7681; --panel:#161b22;
+          --panel-line:#30363d;
+          --emb-fill:#3d1d2f; --emb-line:#f778ba;
+          --attn-fill:#3d2607; --attn-line:#e8873a;
+          --norm-fill:#332d08; --norm-line:#d4a72c;
+          --ffn-fill:#0d2a4d; --ffn-line:#6cb6ff;
+          --io-fill:#21262d; --io-line:#8b949e; }
+  }
+  .bg { fill: var(--bg); }
+  .t1 { fill: var(--fg); font-size: 23px; font-weight: 600; }
+  .t2 { fill: var(--muted); font-size: 13.5px; }
+  .group { fill: var(--panel); stroke: var(--panel-line); stroke-width: 1.5; stroke-dasharray: 7 5; }
+  .panel { fill: var(--panel); stroke: var(--panel-line); stroke-width: 1.5; }
+  .m { fill: var(--fg); font-size: 13px; font-weight: 500; }
+  .s { fill: var(--muted); font-size: 10.5px; }
+  .lbl { fill: var(--fg); font-size: 12.5px; }
+  .io-lbl { fill: var(--muted); font-size: 13.5px; font-weight: 500; }
+  .nlab { fill: var(--muted); font-size: 14px; font-weight: 600; }
+  .ptitle { fill: var(--fg); font-size: 16px; font-weight: 600; }
+  .psub { fill: var(--muted); font-size: 11.5px; }
+  .formula { fill: var(--fg); font-size: 12.5px; font-family: Consolas, Menlo, monospace; }
+  .note { fill: var(--muted); font-size: 11.5px; }
+  .dims { fill: var(--muted); font-size: 13px; }
+  .wire { stroke: var(--line); stroke-width: 1.8; }
+  .plus { stroke: var(--fg); stroke-width: 1.6; }
+  .wave { stroke: var(--fg); stroke-width: 1.5; }
+  .bx { stroke-width: 1.6; }
+  .emb { fill: var(--emb-fill); stroke: var(--emb-line); }
+  .attn { fill: var(--attn-fill); stroke: var(--attn-line); }
+  .norm { fill: var(--norm-fill); stroke: var(--norm-line); }
+  .ffn { fill: var(--ffn-fill); stroke: var(--ffn-line); }
+  .io { fill: var(--io-fill); stroke: var(--io-line); }
+  .outbox { fill: var(--panel); stroke: var(--line); stroke-dasharray: 5 4; }
+  .pos-fill { fill: var(--panel); }
+  .pos-line { stroke: var(--line); stroke-width: 1.6; }
+  .sw { stroke-width: 1.4; }
+</style>
+<rect class="bg" x="0" y="0" width="1400" height="1000"/>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="var(--line)"/></marker></defs>
+<text x="48" y="52" class="t1" text-anchor="start">Transformer 结构图</text>
+<text x="48" y="78" class="t2" text-anchor="start">重绘自 Attention Is All You Need（2017）Figure 1 —— 左：编码器；中：解码器；右：两个关键子模块展开</text>
+<rect x="84" y="597" width="332" height="-98" rx="12" class="group"/>
+<text x="62" y="548" text-anchor="middle" class="nlab" transform="rotate(-90 62 548)">N × 6</text>
+<text x="250" y="805" class="io-lbl" text-anchor="middle">输入序列 Inputs</text>
+<line x1="250" y1="779" x2="250" y2="765" class="wire" marker-end="url(#ah)"/>
+<g><rect x="100" y="723" width="300" height="42" rx="7" class="bx emb"/><text x="250" y="740" text-anchor="middle" class="m">输入嵌入</text><text x="250" y="757" text-anchor="middle" class="s">Input Embedding</text></g>
+<line x1="250" y1="723" x2="250" y2="701" class="wire" marker-end="url(#ah)"/>
+<circle cx="250" cy="688" r="13" class="pos-fill pos-line"/>
+<line x1="244" y1="688" x2="256" y2="688" class="plus"/>
+<line x1="250" y1="682" x2="250" y2="694" class="plus"/>
+<circle cx="320" cy="688" r="13" class="pos-fill pos-line"/>
+<path d="M 312 688 q 4 -8 8 0 t 8 0" class="wave" fill="none"/>
+<line x1="263" y1="688" x2="307" y2="688" class="wire"/>
+<text x="340" y="693" class="lbl" text-anchor="start">位置编码</text>
+<line x1="250" y1="675" x2="250" y2="653" class="wire" marker-end="url(#ah)"/>
+<g><rect x="100" y="611" width="300" height="42" rx="7" class="bx attn"/><text x="250" y="628" text-anchor="middle" class="m">多头自注意力</text><text x="250" y="645" text-anchor="middle" class="s">Multi-Head Self-Attention</text></g>
+<line x1="250" y1="611" x2="250" y2="597" class="wire" marker-end="url(#ah)"/>
+<g><rect x="100" y="555" width="300" height="42" rx="7" class="bx norm"/><text x="250" y="572" text-anchor="middle" class="m">相加 &amp; 归一化</text><text x="250" y="589" text-anchor="middle" class="s">Add &amp; Norm</text></g>
+<line x1="250" y1="555" x2="250" y2="541" class="wire" marker-end="url(#ah)"/>
+<g><rect x="100" y="499" width="300" height="42" rx="7" class="bx ffn"/><text x="250" y="516" text-anchor="middle" class="m">前馈网络</text><text x="250" y="533" text-anchor="middle" class="s">Position-wise FFN</text></g>
+<line x1="250" y1="499" x2="250" y2="485" class="wire" marker-end="url(#ah)"/>
+<g><rect x="100" y="443" width="300" height="42" rx="7" class="bx norm"/><text x="250" y="460" text-anchor="middle" class="m">相加 &amp; 归一化</text><text x="250" y="477" text-anchor="middle" class="s">Add &amp; Norm</text></g>
+<line x1="250" y1="443" x2="250" y2="429" class="wire" marker-end="url(#ah)"/>
+<g><rect x="100" y="387" width="300" height="42" rx="7" class="bx outbox"/><text x="250" y="404" text-anchor="middle" class="m">编码器输出 z</text><text x="250" y="421" text-anchor="middle" class="s">给解码器提供 K、V</text></g>
+<rect x="534" y="597" width="332" height="-210" rx="12" class="group"/>
+<text x="884" y="492" text-anchor="middle" class="nlab" transform="rotate(-90 884 492)">N × 6</text>
+<text x="700" y="805" class="io-lbl" text-anchor="middle">输出序列（右移一位）</text>
+<line x1="700" y1="779" x2="700" y2="765" class="wire" marker-end="url(#ah)"/>
+<g><rect x="550" y="723" width="300" height="42" rx="7" class="bx emb"/><text x="700" y="740" text-anchor="middle" class="m">输出嵌入</text><text x="700" y="757" text-anchor="middle" class="s">Output Embedding</text></g>
+<line x1="700" y1="723" x2="700" y2="701" class="wire" marker-end="url(#ah)"/>
+<circle cx="700" cy="688" r="13" class="pos-fill pos-line"/>
+<line x1="694" y1="688" x2="706" y2="688" class="plus"/>
+<line x1="700" y1="682" x2="700" y2="694" class="plus"/>
+<circle cx="770" cy="688" r="13" class="pos-fill pos-line"/>
+<path d="M 762 688 q 4 -8 8 0 t 8 0" class="wave" fill="none"/>
+<line x1="713" y1="688" x2="757" y2="688" class="wire"/>
+<text x="790" y="693" class="lbl" text-anchor="start">位置编码</text>
+<line x1="700" y1="675" x2="700" y2="653" class="wire" marker-end="url(#ah)"/>
+<g><rect x="550" y="611" width="300" height="42" rx="7" class="bx attn"/><text x="700" y="628" text-anchor="middle" class="m">掩码多头自注意力</text><text x="700" y="645" text-anchor="middle" class="s">Masked Multi-Head Attention</text></g>
+<line x1="700" y1="611" x2="700" y2="597" class="wire" marker-end="url(#ah)"/>
+<g><rect x="550" y="555" width="300" height="42" rx="7" class="bx norm"/><text x="700" y="572" text-anchor="middle" class="m">相加 &amp; 归一化</text><text x="700" y="589" text-anchor="middle" class="s">Add &amp; Norm</text></g>
+<line x1="700" y1="555" x2="700" y2="541" class="wire" marker-end="url(#ah)"/>
+<g><rect x="550" y="499" width="300" height="42" rx="7" class="bx attn"/><text x="700" y="516" text-anchor="middle" class="m">多头注意力</text><text x="700" y="533" text-anchor="middle" class="s">Q 来自解码器，K/V 来自编码器</text></g>
+<line x1="700" y1="499" x2="700" y2="485" class="wire" marker-end="url(#ah)"/>
+<g><rect x="550" y="443" width="300" height="42" rx="7" class="bx norm"/><text x="700" y="460" text-anchor="middle" class="m">相加 &amp; 归一化</text><text x="700" y="477" text-anchor="middle" class="s">Add &amp; Norm</text></g>
+<line x1="700" y1="443" x2="700" y2="429" class="wire" marker-end="url(#ah)"/>
+<g><rect x="550" y="387" width="300" height="42" rx="7" class="bx ffn"/><text x="700" y="404" text-anchor="middle" class="m">前馈网络</text><text x="700" y="421" text-anchor="middle" class="s">Position-wise FFN</text></g>
+<line x1="700" y1="387" x2="700" y2="373" class="wire" marker-end="url(#ah)"/>
+<g><rect x="550" y="331" width="300" height="42" rx="7" class="bx norm"/><text x="700" y="348" text-anchor="middle" class="m">相加 &amp; 归一化</text><text x="700" y="365" text-anchor="middle" class="s">Add &amp; Norm</text></g>
+<line x1="700" y1="331" x2="700" y2="317" class="wire" marker-end="url(#ah)"/>
+<g><rect x="550" y="275" width="300" height="42" rx="7" class="bx io"/><text x="700" y="292" text-anchor="middle" class="m">线性层</text><text x="700" y="309" text-anchor="middle" class="s">Linear</text></g>
+<line x1="700" y1="275" x2="700" y2="261" class="wire" marker-end="url(#ah)"/>
+<g><rect x="550" y="219" width="300" height="42" rx="7" class="bx io"/><text x="700" y="245" text-anchor="middle" class="m">Softmax</text></g>
+<line x1="700" y1="219" x2="700" y2="205" class="wire" marker-end="url(#ah)"/>
+<text x="700" y="189" class="io-lbl" text-anchor="middle">输出概率 Output Probabilities</text>
+<path d="M 400 408 L 480 408 L 480 520 L 546 520" class="wire" fill="none" marker-end="url(#ah)"/>
+<text x="492" y="397" class="note" text-anchor="start">编码器输出 z</text>
+<text x="492" y="510" class="lbl" text-anchor="start">K, V</text>
+<rect x="910" y="110" width="450" height="360" rx="14" class="panel"/><text x="934" y="144" class="ptitle">缩放点积注意力</text><text x="934" y="163" class="psub">Scaled Dot-Product Attention</text>
+<text x="1135" y="188" class="formula" text-anchor="middle">Attention(Q,K,V) = softmax(Q·K^T / √d_k)·V</text>
+<g><rect x="1020" y="393" width="230" height="34" rx="7" class="bx io"/><text x="1135" y="406" text-anchor="middle" class="m">MatMul</text><text x="1135" y="423" text-anchor="middle" class="s">Q · K^T</text></g>
+<g><rect x="1020" y="345" width="230" height="34" rx="7" class="bx io"/><text x="1135" y="358" text-anchor="middle" class="m">Scale</text><text x="1135" y="375" text-anchor="middle" class="s">÷ √d_k</text></g>
+<g><rect x="1020" y="297" width="230" height="34" rx="7" class="bx io"/><text x="1135" y="319" text-anchor="middle" class="m">Mask（可选）</text></g>
+<g><rect x="1020" y="249" width="230" height="34" rx="7" class="bx io"/><text x="1135" y="271" text-anchor="middle" class="m">SoftMax</text></g>
+<g><rect x="1020" y="201" width="230" height="34" rx="7" class="bx io"/><text x="1135" y="214" text-anchor="middle" class="m">MatMul</text><text x="1135" y="231" text-anchor="middle" class="s">× V</text></g>
+<line x1="1135" y1="393" x2="1135" y2="379" class="wire" marker-end="url(#ah)"/>
+<line x1="1135" y1="345" x2="1135" y2="331" class="wire" marker-end="url(#ah)"/>
+<line x1="1135" y1="297" x2="1135" y2="283" class="wire" marker-end="url(#ah)"/>
+<line x1="1135" y1="249" x2="1135" y2="235" class="wire" marker-end="url(#ah)"/>
+<text x="1259" y="204" class="note" text-anchor="start">输出</text>
+<text x="1080" y="446" class="lbl" text-anchor="middle">Q</text>
+<text x="1190" y="446" class="lbl" text-anchor="middle">K</text>
+<line x1="1080" y1="438" x2="1080" y2="427" class="wire"/>
+<line x1="1190" y1="438" x2="1190" y2="427" class="wire"/>
+<text x="1325" y="446" class="lbl" text-anchor="middle">V</text>
+<path d="M 1325 438 L 1325 218 L 1254 218" class="wire" fill="none" marker-end="url(#ah)"/>
+<rect x="910" y="490" width="450" height="390" rx="14" class="panel"/><text x="934" y="524" class="ptitle">多头注意力</text><text x="934" y="543" class="psub">Multi-Head Attention</text>
+<text x="1135" y="572" class="formula" text-anchor="middle">head_i = Attention(Q·W_i^Q, K·W_i^K, V·W_i^V)</text>
+<g><rect x="1020" y="588" width="230" height="32" rx="7" class="bx io"/><text x="1135" y="609" text-anchor="middle" class="m">输出（512 维）</text></g>
+<g><rect x="1020" y="638" width="230" height="32" rx="7" class="bx io"/><text x="1135" y="650" text-anchor="middle" class="m">线性层</text><text x="1135" y="667" text-anchor="middle" class="s">W^O</text></g>
+<g><rect x="1020" y="688" width="230" height="32" rx="7" class="bx io"/><text x="1135" y="709" text-anchor="middle" class="m">Concat（拼接 8 个头）</text></g>
+<rect x="1017" y="754" width="260" height="36" rx="7" class="bx attn" opacity="0.45"/>
+<rect x="1011" y="748" width="260" height="36" rx="7" class="bx attn" opacity="0.45"/>
+<rect x="1005" y="742" width="260" height="36" rx="7" class="bx attn" opacity="1"/>
+<text x="1125" y="754" class="m" text-anchor="middle">8 个头并行做缩放点积注意力</text>
+<text x="1303" y="752" class="note" text-anchor="start">h = 8</text>
+<line x1="1135" y1="742" x2="1135" y2="722" class="wire" marker-end="url(#ah)"/>
+<line x1="1135" y1="688" x2="1135" y2="672" class="wire" marker-end="url(#ah)"/>
+<line x1="1135" y1="638" x2="1135" y2="622" class="wire" marker-end="url(#ah)"/>
+<g><rect x="959" y="796" width="112" height="32" rx="7" class="bx io"/><text x="1015" y="808" text-anchor="middle" class="m">线性层</text><text x="1015" y="825" text-anchor="middle" class="s">W^Q</text></g>
+<g><rect x="1079" y="796" width="112" height="32" rx="7" class="bx io"/><text x="1135" y="808" text-anchor="middle" class="m">线性层</text><text x="1135" y="825" text-anchor="middle" class="s">W^K</text></g>
+<g><rect x="1199" y="796" width="112" height="32" rx="7" class="bx io"/><text x="1255" y="808" text-anchor="middle" class="m">线性层</text><text x="1255" y="825" text-anchor="middle" class="s">W^V</text></g>
+<line x1="1015" y1="796" x2="1015" y2="782" class="wire"/>
+<line x1="1135" y1="796" x2="1135" y2="782" class="wire"/>
+<line x1="1255" y1="796" x2="1255" y2="782" class="wire"/>
+<text x="1015" y="848" class="lbl" text-anchor="middle">Q</text>
+<text x="1135" y="848" class="lbl" text-anchor="middle">K</text>
+<text x="1255" y="848" class="lbl" text-anchor="middle">V</text>
+<text x="1135" y="872" class="note" text-anchor="middle">每头 d_k = d_v = d_model / h = 512 / 8 = 64；拼接后由 W^O 投影回 512 维</text>
+<line x1="48" y1="900" x2="1352" y2="900" class="wire"/>
+<rect x="48" y="918" width="18" height="18" rx="4" class="bx sw emb"/>
+<text x="74" y="932" class="lbl" text-anchor="start">嵌入 Embedding</text>
+<rect x="260" y="918" width="18" height="18" rx="4" class="bx sw attn"/>
+<text x="286" y="932" class="lbl" text-anchor="start">注意力 Attention</text>
+<rect x="472" y="918" width="18" height="18" rx="4" class="bx sw norm"/>
+<text x="498" y="932" class="lbl" text-anchor="start">相加 &amp; 归一化</text>
+<rect x="684" y="918" width="18" height="18" rx="4" class="bx sw ffn"/>
+<text x="710" y="932" class="lbl" text-anchor="start">前馈网络 FFN</text>
+<rect x="896" y="918" width="18" height="18" rx="4" class="bx sw io"/>
+<text x="922" y="932" class="lbl" text-anchor="start">线性层 / Softmax</text>
+<text x="48" y="976" class="dims" text-anchor="start">关键尺寸：d_model = 512 · d_ff = 2048 · h = 8 · d_k = d_v = 64 · N = 6 · dropout = 0.1 · 所有子层与嵌入输出同为 512 维，便于残差相加</text>
+</svg>
